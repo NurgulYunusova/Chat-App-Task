@@ -60,11 +60,9 @@ const webUserController = {
         } else {
           user.codeCounter = user.codeCounter - 1;
           user.save();
-          res
-            .status(404)
-            .json({
-              "confirm code error:!": "Kalan hakkınız " + user.codeCounter,
-            });
+          res.status(404).json({
+            "confirm code error:!": "Kalan hakkınız " + user.codeCounter,
+          });
         }
       }
     });
@@ -77,15 +75,15 @@ const webUserController = {
     })
       .then((user) => {
         if (user) {
-          let confirmCode = Math.floor(Math.random() * 10000); // code review yapılacak. confirm code 35 de olabilir :D
+          // let confirmCode = Math.floor(Math.random() * 10000); // code review yapılacak. confirm code 35 de olabilir :D
 
-          let codeExpire = moment().add("30", "s");
+          // let codeExpire = moment().add("30", "s");
 
-          user.code = confirmCode;
-          user.codeExpire = codeExpire;
-          user.save();
+          // user.code = confirmCode;
+          // user.codeExpire = codeExpire;
+          // user.save();
 
-          sendConfirmEMail(req.body.email, confirmCode);
+          // sendConfirmEMail(req.body.email, confirmCode);
           res.json({ email: req.body.email });
         } else {
           res.status(404).json({ message: "email or password wrong!" });

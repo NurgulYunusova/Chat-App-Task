@@ -10,8 +10,15 @@ import {
 import { useFormik } from "formik";
 import { paperStyle } from "./AuthStyles";
 import { singInValidations } from "./validations";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 export const LoginPage = () => {
+  const { login } = useContext(AuthContext);
+
+  const navigate = useNavigate();
   //use Formik
   const { handleSubmit, handleChange, touched, values, errors } = useFormik({
     initialValues: {
@@ -19,8 +26,26 @@ export const LoginPage = () => {
       password: "",
     },
     validationSchema: singInValidations,
-    onSubmit: ({ email, password }, bag) => {},
+    onSubmit: ({ email, password }, bug) => {
+      const data = {
+        email: email,
+        password: password,
+      };
+
+      axios
+        .post("http://localhost:3300/api/webuser/login", data)
+        .then((response) => {
+          console.log(response.data);
+          login(data.email);
+          navigate("/");
+        })
+        .catch((error) => {
+          console.error(error.message);
+          alert("Email or password is invalid");
+        });
+    },
   });
+
   return (
     <Grid>
       <Paper elevation={20} style={paperStyle}>

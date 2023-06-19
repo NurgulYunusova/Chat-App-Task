@@ -34,7 +34,8 @@ export const RegisterPage = () => {
         .post("http://localhost:3300/api/webuser/register", data)
         .then((response) => {
           console.log(response.data);
-          navigate("/signin");
+
+          navigate("/confirm");
         })
         .catch((error) => {
           console.error(error.message);

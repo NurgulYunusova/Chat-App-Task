@@ -8,8 +8,17 @@ import {
   Button,
 } from "@mui/material";
 import { CatchingPokemon } from "@mui/icons-material";
+import { AuthContext } from "../context/AuthContext";
+import { useContext } from "react";
 
 export const Layout = () => {
+  const { isLoggedIn, logout, setName, name } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    setName("");
+    logout();
+  };
+
   return (
     <>
       <AppBar position="static">
@@ -35,24 +44,50 @@ export const Layout = () => {
             </Typography>
           </Stack>
           <Stack direction="row" spacing={2}>
-            <>
-              <Button
-                component={NavLink}
-                to="/signin"
-                variant="outlined"
-                color="inherit"
-              >
-                Sign In
-              </Button>
-              <Button
-                component={NavLink}
-                to="/signup"
-                variant="outlined"
-                color="inherit"
-              >
-                Sign Up
-              </Button>
-            </>
+            {isLoggedIn ? (
+              <>
+                <Typography
+                  color="white"
+                  noWrap
+                  variant="h6"
+                  component={NavLink}
+                  to="/"
+                  sx={{ textDecoration: "none" }}
+                >
+                  {name}
+                </Typography>
+                <Button
+                  component={NavLink}
+                  to="/signin"
+                  variant="outlined"
+                  color="inherit"
+                  onClick={() => {
+                    handleLogout();
+                  }}
+                >
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  component={NavLink}
+                  to="/signin"
+                  variant="outlined"
+                  color="inherit"
+                >
+                  Sign In
+                </Button>
+                <Button
+                  component={NavLink}
+                  to="/signup"
+                  variant="outlined"
+                  color="inherit"
+                >
+                  Sign Up
+                </Button>
+              </>
+            )}
           </Stack>
         </Toolbar>
       </AppBar>

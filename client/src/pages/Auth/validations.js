@@ -1,4 +1,5 @@
-import { object, string, ref } from "yup";
+import { object, string, ref, number } from "yup";
+
 export const singUpValidations = object({
   username: string().min(2).max(50).required(),
   email: string().email().required(),
@@ -7,7 +8,13 @@ export const singUpValidations = object({
     .oneOf([ref("password")])
     .required(),
 });
+
 export const singInValidations = object({
   email: string().email().required(),
   password: string().required().min(5),
+});
+
+export const confirmValidations = object({
+  email: string().email().required(),
+  code: number().required(),
 });
