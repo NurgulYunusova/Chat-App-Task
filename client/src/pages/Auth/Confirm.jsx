@@ -1,24 +1,40 @@
 /* eslint-disable no-unused-vars */
-import { Grid, Paper, TextField, Button, Alert } from "@mui/material";
+import {
+  Grid,
+  Paper,
+  TextField,
+  Button,
+  Alert,
+  Typography,
+} from "@mui/material";
 import { useFormik } from "formik";
 import { paperStyle } from "./AuthStyles";
 import { confirmValidations } from "./validations";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
-export const ConfirmPage = () => {
+export const ConfirmPage = ({ userEmail }) => {
   const { login } = useContext(AuthContext);
 
   const navigate = useNavigate();
+
+  const location = useLocation();
+  let email = location.state.userEmail;
+
+  // useEffect(() => {
+  //   if (!email) {
+  //     navigate("/");
+  //   }
+  // }, []);
 
   const { handleSubmit, handleChange, touched, values, errors } = useFormik({
     initialValues: {
       code: "",
     },
     validationSchema: confirmValidations,
-    onSubmit: ({ email, code }, bug) => {
+    onSubmit: ({ code }, bug) => {
       const data = {
         email: email,
         code: code,
@@ -28,7 +44,7 @@ export const ConfirmPage = () => {
         .post("http://localhost:3300/api/webuser/confirm", data)
         .then((response) => {
           console.log(response.data);
-          login(data.email);
+          login(email);
           navigate("/");
         })
         .catch((error) => {
@@ -40,11 +56,19 @@ export const ConfirmPage = () => {
   return (
     <Grid>
       <Paper elevation={20} style={paperStyle}>
+        <Grid textAlign="center" marginBottom={2}>
+          <Typography variant="h5" fontWeight="bold">
+            Verification Code
+          </Typography>
+          <Typography variant="caption">
+            Please write verification code!
+          </Typography>
+        </Grid>
         <Grid>
           {errors.general && <Alert severity="error">{errors.general}</Alert>}
         </Grid>
         <form onSubmit={handleSubmit}>
-          <TextField
+          {/* <TextField
             fullWidth
             name="email"
             label="Email"
@@ -54,7 +78,7 @@ export const ConfirmPage = () => {
             value={values.email}
             error={touched.email && Boolean(errors.email)}
             helperText={touched.email && errors.email}
-          />
+          /> */}
           <TextField
             fullWidth
             name="code"

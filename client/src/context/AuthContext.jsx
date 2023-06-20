@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setIsLoggedIn(false);
+    setName("");
   };
 
   return (

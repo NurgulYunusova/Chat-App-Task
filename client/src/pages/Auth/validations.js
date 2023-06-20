@@ -15,6 +15,5 @@ export const singInValidations = object({
 });
 
 export const confirmValidations = object({
-  email: string().email().required(),
   code: number().required(),
 });

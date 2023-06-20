@@ -35,7 +35,11 @@ export const RegisterPage = () => {
         .then((response) => {
           console.log(response.data);
 
-          navigate("/confirm");
+          navigate("/confirm", {
+            state: {
+              userEmail: email,
+            },
+          });
         })
         .catch((error) => {
           console.error(error.message);
